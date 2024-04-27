@@ -1,0 +1,43 @@
+.chat-container {
+  display: flex;
+  height: 100vh;
+  width: 1200px;
+  margin: 0 auto;
+  border: 1px solid salmon;
+}
+
+.conversation-list {
+  flex: 1;
+  border-right: 1px solid #ccc;
+  overflow-y: auto;
+}
+
+.message-list {
+  flex: 2;
+  padding: 0 20px;
+}
+
+.received {
+  margin-right: auto;
+}
+
+.sent {
+  margin-left: auto;
+}
+
+.message-list .MuiListItem-root {
+  width: fit-content;
+  max-width: 80%;
+  margin-bottom: 10px;
+  word-wrap: break-word;
+}
+
+.message-list .MuiListItemText-root {
+  background-color: #f0f0f0;
+  padding: 10px;
+  border-radius: 10px;
+}
+
+.message-list .MuiListItemText-alignFlexEnd {
+  background-color: #dcf8c6; /* Different background color for own messages */
+}
