@@ -33,7 +33,7 @@ const ChatApp = () => {
     } else {
       fetchConversations(); // Fetch conversations if token exists
     }
-  }, [history]);
+  }, []);
 
   const fetchConversations = async () => {
     try {
