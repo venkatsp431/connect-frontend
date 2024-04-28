@@ -53,7 +53,7 @@ const MessageList = ({ conversation, userId }) => {
         userId
       );
       const response = await axios.post(
-        "http://localhost:7070/api/chat/",
+        "https://connect-backend-dzrh.onrender.com/api/chat/",
         {
           receiver: conversation.otherUser._id,
           text: newMessage,
