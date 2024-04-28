@@ -1,4 +1,3 @@
-// MessageList.js
 import React, { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import {
@@ -16,17 +15,27 @@ const MessageList = ({ conversation, userId }) => {
   const messageListRef = useRef(null);
 
   useEffect(() => {
-    console.log(conversation, userId);
     if (conversation) {
-      fetchMessages(conversation?.conversationId);
+      fetchMessages(conversation.conversationId);
     }
   }, [conversation]);
+
   useEffect(() => {
     // Scroll to the bottom when messages change
     if (messageListRef.current) {
       messageListRef.current.scrollTop = messageListRef.current.scrollHeight;
     }
   }, [messages]);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (conversation) {
+        fetchMessages(conversation.conversationId);
+      }
+    }, 1000); // Fetch messages every 5 seconds
+
+    return () => clearInterval(interval);
+  }, [conversation]);
 
   const fetchMessages = async (conversationId) => {
     try {
@@ -43,15 +52,10 @@ const MessageList = ({ conversation, userId }) => {
       console.error("Error fetching messages:", error);
     }
   };
+
   const handleMessageSend = async () => {
     if (!newMessage.trim()) return;
     try {
-      console.log(
-        "Sending message...",
-        conversation.otherUser._id,
-        newMessage,
-        userId
-      );
       const response = await axios.post(
         "https://connect-backend-dzrh.onrender.com/api/chat/",
         {
@@ -64,11 +68,7 @@ const MessageList = ({ conversation, userId }) => {
           },
         }
       );
-      console.log("Message sent successfully:", response.data);
-      // Clear the message input after sending
       setNewMessage("");
-      // Refetch messages to update the list
-      fetchMessages(conversation?.conversationId);
     } catch (error) {
       console.error("Error sending message:", error);
     }
@@ -78,7 +78,7 @@ const MessageList = ({ conversation, userId }) => {
     <div style={{ display: "flex", flexDirection: "column", height: "100%" }}>
       <Typography variant="h6" sx={{ marginTop: "10px" }}>
         {conversation?.otherUser?.name}
-      </Typography>{" "}
+      </Typography>
       <div
         className="message-list"
         style={{
