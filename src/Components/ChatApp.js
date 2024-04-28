@@ -73,10 +73,9 @@ const ChatApp = () => {
   };
 
   const handleLogout = () => {
-    // Remove token from local storage
     localStorage.removeItem("token");
-    // Navigate to /login
-    window.location.href = "/login";
+
+    window.location.href = "/";
   };
   return (
     <div className="chat-container">

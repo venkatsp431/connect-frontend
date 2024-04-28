@@ -7,6 +7,7 @@ import {
   Container,
   Grid,
   Snackbar,
+  CircularProgress, // Import CircularProgress for loading spinner
 } from "@mui/material";
 
 const AuthPage = () => {
@@ -25,6 +26,7 @@ const AuthPage = () => {
   const [signupSuccess, setSignupSuccess] = useState(false);
   const [signupMessage, setSignupMessage] = useState("");
   const [openSnackbar, setOpenSnackbar] = useState(false);
+  const [loading, setLoading] = useState(false); // State for loading
 
   const handleLoginChange = (e) => {
     setLoginData({ ...loginData, [e.target.name]: e.target.value });
@@ -57,6 +59,7 @@ const AuthPage = () => {
 
   const handleSignupSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true); // Set loading to true while waiting for response
     try {
       const response = await axios.post(
         "https://connect-backend-dzrh.onrender.com/api/users/signup",
@@ -77,6 +80,8 @@ const AuthPage = () => {
       console.error("Signup Error:", error);
       setSignupMessage("Signup Failed. Please try again");
       // Handle signup error
+    } finally {
+      setLoading(false); // Set loading back to false after response
     }
   };
 
@@ -121,6 +126,8 @@ const AuthPage = () => {
           <Typography variant="h4" gutterBottom>
             Signup
           </Typography>
+          {loading && <CircularProgress />}{" "}
+          {/* Show loading spinner if loading */}
           {signupSuccess && (
             <Typography variant="body1" color="success">
               {signupMessage}
