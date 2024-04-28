@@ -48,7 +48,7 @@ const AuthPage = () => {
         JSON.stringify(response.data.data.user)
       );
       // Redirect to home page after successful login
-      window.location.href = "/";
+      window.location.href = "/chat";
     } catch (error) {
       console.error("Login Error:", error);
       // Handle login error
