@@ -35,7 +35,7 @@ const MessageList = ({ conversation, userId }) => {
     }, 1000); // Fetch messages every 5 seconds
 
     return () => clearInterval(interval);
-  }, [conversation, fetchMessages]);
+  }, [conversation]);
 
   const fetchMessages = async (conversationId) => {
     try {

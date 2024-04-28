@@ -78,8 +78,8 @@ const ChatApp = () => {
   };
 
   return (
-    <Grid container>
-      <Grid item xs={12}>
+    <div className="chat-container">
+      <div className="conversation-list">
         <AppBar position="static">
           <Toolbar>
             <Typography variant="h6" sx={{ flexGrow: 1 }}>
@@ -113,14 +113,10 @@ const ChatApp = () => {
             </Menu>
           </Toolbar>
         </AppBar>
-      </Grid>
-      <Grid item xs={12}>
         <Tabs value={tabValue} onChange={handleTabChange} centered>
           <Tab label="Conversations" />
           <Tab label="All Users" />
         </Tabs>
-      </Grid>
-      <Grid item xs={12}>
         <div role="tabpanel" hidden={tabValue !== 0}>
           {tabValue === 0 && (
             <ConversationList
@@ -132,17 +128,15 @@ const ChatApp = () => {
         <div role="tabpanel" hidden={tabValue !== 1}>
           <AllUsersList userid={userid} onSelect={handleAllUsersSelect} />
         </div>
-      </Grid>
-      <Grid item xs={12}>
-        <div>
-          {selectedConversation !== null && userid !== null ? (
-            <MessageList conversation={selectedConversation} userId={userid} />
-          ) : (
-            <p>Please select a conversation</p>
-          )}
-        </div>
-      </Grid>
-    </Grid>
+      </div>
+      <div className="message-list">
+        {selectedConversation !== null && userid !== null ? (
+          <MessageList conversation={selectedConversation} userId={userid} />
+        ) : (
+          <p>Please select a conversation</p>
+        )}
+      </div>
+    </div>
   );
 };
 
