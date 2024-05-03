@@ -5,7 +5,7 @@ const ConversationList = ({ conversations, onSelect }) => {
   console.log(conversations);
   return (
     <div>
-      {conversations.length === 0 ? (
+      {conversations?.length === 0 ? (
         <Typography variant="body1">
           Empty conversation. Please select to start from all users.
         </Typography>

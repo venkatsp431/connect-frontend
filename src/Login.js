@@ -9,6 +9,7 @@ import {
   Snackbar,
   CircularProgress, // Import CircularProgress for loading spinner
 } from "@mui/material";
+import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 
 const AuthPage = () => {
   const [loginData, setLoginData] = useState({
@@ -38,6 +39,7 @@ const AuthPage = () => {
 
   const handleLoginSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true); // Set loading to true while waiting for response
     try {
       const response = await axios.post(
         "https://connect-backend-dzrh.onrender.com/api/users/login",
@@ -54,6 +56,8 @@ const AuthPage = () => {
     } catch (error) {
       console.error("Login Error:", error);
       // Handle login error
+    } finally {
+      setLoading(false); // Set loading back to false after response
     }
   };
 
@@ -90,11 +94,18 @@ const AuthPage = () => {
   };
 
   return (
-    <Container>
-      <Grid container spacing={2} justifyContent="center" alignItems="center">
+    <Container maxWidth="md">
+      <Grid
+        container
+        spacing={2}
+        justifyContent="center"
+        alignItems="center"
+        sx={{ mt: 8 }}
+      >
         <Grid item xs={12} sm={6}>
-          <Typography variant="h4" gutterBottom>
-            Login
+          <Typography variant="h5" gutterBottom align="center">
+            <LockOutlinedIcon fontSize="large" sx={{ mr: 1 }} />
+            Connect - Login
           </Typography>
           <form onSubmit={handleLoginSubmit}>
             <TextField
@@ -117,22 +128,22 @@ const AuthPage = () => {
               margin="normal"
               required
             />
-            <Button type="submit" variant="contained" color="primary">
-              Login
+            <Button
+              type="submit"
+              variant="contained"
+              color="primary"
+              fullWidth
+              sx={{ mt: 2 }}
+            >
+              {loading ? <CircularProgress size={24} /> : "Login"}
             </Button>
           </form>
         </Grid>
         <Grid item xs={12} sm={6}>
-          <Typography variant="h4" gutterBottom>
-            Signup
+          <Typography variant="h5" gutterBottom align="center">
+            <LockOutlinedIcon fontSize="large" sx={{ mr: 1 }} />
+            Connect - Signup
           </Typography>
-          {loading && <CircularProgress />}{" "}
-          {/* Show loading spinner if loading */}
-          {signupSuccess && (
-            <Typography variant="body1" color="success">
-              {signupMessage}
-            </Typography>
-          )}
           <form onSubmit={handleSignupSubmit}>
             <TextField
               label="Name"
@@ -174,8 +185,14 @@ const AuthPage = () => {
               margin="normal"
               required
             />
-            <Button type="submit" variant="contained" color="primary">
-              Signup
+            <Button
+              type="submit"
+              variant="contained"
+              color="primary"
+              fullWidth
+              sx={{ mt: 2 }}
+            >
+              {loading ? <CircularProgress size={24} /> : "Signup"}
             </Button>
           </form>
         </Grid>

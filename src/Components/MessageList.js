@@ -74,6 +74,56 @@ const MessageList = ({ conversation, userId }) => {
     }
   };
 
+  const handleEditMessage = async (messageId, newText) => {
+    try {
+      // Prompt the user to input the new text
+      const newMessageText = prompt("Enter the new message text:", newText);
+      if (!newMessageText) return; // If the user cancels or provides empty input, do nothing
+
+      // Call the API to update the message with the new text
+      const response = await axios.put(
+        `https://connect-backend-dzrh.onrender.com/api/chat/${messageId}`,
+        { text: newMessageText },
+        {
+          headers: {
+            authorization: `${localStorage.getItem("token")}`,
+          },
+        }
+      );
+      // Update the message in the state with the new text
+      setMessages((prevMessages) =>
+        prevMessages.map((message) =>
+          message._id === messageId
+            ? { ...message, text: newMessageText }
+            : message
+        )
+      );
+    } catch (error) {
+      console.error("Error editing message:", error);
+    }
+  };
+
+  const handleDeleteMessage = async (messageId) => {
+    try {
+      console.log(messageId);
+      const response = await axios.delete(
+        `https://connect-backend-dzrh.onrender.com/api/chat/${messageId}`,
+        {
+          headers: {
+            authorization: `${localStorage.getItem("token")}`,
+          },
+        }
+      );
+
+      // Remove the message from the state
+      setMessages((prevMessages) =>
+        prevMessages.filter((message) => message._id !== messageId)
+      );
+    } catch (error) {
+      console.error("Error deleting message:", error);
+    }
+  };
+
   return (
     <div style={{ display: "flex", flexDirection: "column", height: "100%" }}>
       <Typography variant="h6" sx={{ marginTop: "10px" }}>
@@ -108,6 +158,21 @@ const MessageList = ({ conversation, userId }) => {
                   </Typography>
                 }
               />
+              {/* Edit and delete buttons */}
+              {message?.sender?._id === userId && (
+                <>
+                  <Button
+                    onClick={() =>
+                      handleEditMessage(message._id, "Edited message")
+                    }
+                  >
+                    Edit
+                  </Button>
+                  <Button onClick={() => handleDeleteMessage(message._id)}>
+                    Delete
+                  </Button>
+                </>
+              )}
             </ListItem>
           ))}
         </List>
